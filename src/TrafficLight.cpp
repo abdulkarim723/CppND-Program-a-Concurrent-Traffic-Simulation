@@ -56,14 +56,15 @@ void TrafficLight::simulate()
 // virtual function which is executed in a thread
 void TrafficLight::cycleThroughPhases()
 {
-    int minCycleDuration = 4;
-    int maxCycleDuration = 6;
     std::chrono::time_point<std::chrono::system_clock> lastUpdate;
     lastUpdate = std::chrono::system_clock::now();
+    double cycleDuration;
+    // set cycle duration to the range between 4 and 6 seconds
+    cycleDuration = 4000 + (rand()%2001);
     while(true){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
-        if(timeSinceLastUpdate>=minCycleDuration && timeSinceLastUpdate<=maxCycleDuration){
+        long timeSinceLastUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastUpdate).count();
+        if(timeSinceLastUpdate>=cycleDuration){
             // toggle between red and green
             if(_currentPhase == TrafficLightPhase::green) _currentPhase = TrafficLightPhase::red;
             else _currentPhase = TrafficLightPhase::green;
